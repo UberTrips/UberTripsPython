@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import sklearn
 
-#MODEL GOES HERER
+#MODEL GOES HERE
 
 # df = pd.read_csv('/Users/HudsonCavanagh/Documents/titanic.csv') #training data
 
@@ -17,23 +17,36 @@ import sklearn
 # X = df[['Pclass', 'Sex', 'Age', 'Fare', 'SibSp']]
 # y = df['Survived']
 
-PREDICTOR = .75
+# PREDICTOR = .75
 
 
-#
-# # routes go here
-# @app.route('/predict', methods=['GET'])
-# def predict():
-#     pclass = flask.request.args['pclass']
-#     sex = flask.request.args['sex']
-#     age = flask.request.args['age']
-#     fare = flask.request.args['fare']
-#     sibsp = flask.request.args['sibsp']
-#     sex = flask.request.args['sex']
-#     item = [pclass, sex, age, fare, sibsp]
-#     score = PREDICTOR.predict_proba(item)
-#     results = {'survival chances': score[0,1], 'death chances': score[0,0]}
-#     return flask.jsonify(results)
+#http://127.0.0.1:4000/predict?hood_id=2&day_period=1&day_of_week=2
+# routes go here
+@app.route('/predict', methods=["POST", "GET"]) #, methods=['GET']
+def predict():
+
+    #mvp input below - commented out future inputs
+
+    #
+    hood_id = int(flask.request.args['hood_id'])
+    day_period = int(flask.request.args['day_period'])
+    day_of_week = int(flask.request.args['day_of_week'])
+
+    # address = inputs['address'][0]
+    # time_of_day = inputs['time_of_day'][0]
+
+
+    item_mvp = np.array([day_period, hood_id,day_of_week])
+
+
+    # item = np.array([address, time_of_day, fare, sibsp])
+    # score_mvp = PREDICTOR.predict_proba(item_mvp)
+    # score = PREDICTOR.predict_proba(item)
+    # results_mvp = {'survival chances': score_mvp[0,1]}
+
+
+    fake_results = {'taxi_prob':list(item_mvp)}
+    return flask.jsonify(fake_results)
 
 # alternate routes
 
@@ -41,6 +54,8 @@ PREDICTOR = .75
 def page():
     with open("uber_page.html", 'r') as viz_file:
         return viz_file.read()
+
+
 @app.route('/result', methods=['POST', 'GET'])
 def result():
     '''Gets prediction using HTML form'''
@@ -52,12 +67,12 @@ def result():
         # address = inputs['address'][0]
         # time_of_day = inputs['time_of_day'][0]
         item_mvp = np.array([day_period, hood_id])
-
         # item = np.array([address, time_of_day, fare, sibsp])
         score_mvp = PREDICTOR.predict_proba(item_mvp)
         # score = PREDICTOR.predict_proba(item)
         results_mvp = {'survival chances': score_mvp[0,1]}
-        return flask.jsonify(results_mvp)
+        fake_results = {'taxi_prob':.7}
+        return flask.jsonify(fake_results)
 
 
 if __name__ == '__main__':

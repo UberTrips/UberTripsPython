@@ -11,7 +11,7 @@ import sklearn
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 
 
-trips = pd.read_csv('./uber_app/non_uber_trips.csv')
+trips = pd.read_csv('./non_uber_trips.csv')
 trips = trips.iloc[:,1:]
 trips.columns = ['weekday', 'hour', 'taxi-cs_avg_trips', 'uber_avg_trips','lyft_avg_trips', 'total_trips', 'uber_prob', 'uber_taxi_bin']
 lr_basic = LogisticRegression(solver='liblinear', penalty='l2', C=0.75)
